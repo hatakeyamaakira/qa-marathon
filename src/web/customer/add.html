@@ -50,6 +50,7 @@
                     document.getElementById('customer-form').reset();
                 } else {
                     alert('保存に失敗しました。');
+                    console.log(data);
                 }
               })
               .catch(error => console.error('Error:', error));
