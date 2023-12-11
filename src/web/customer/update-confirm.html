@@ -1,22 +1,85 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案件情報入力</title>
+    <title>Customer Update Confirm</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container mt-5">
-        <!-- ここにHTMLを書く -->
+        <h2 class="mb-4">顧客情報 変更確認画面</h2>
+        <a href="#" onclick="window.history.back(); return false;">戻る</a>
+        <table class="table table-striped">
+            <tbody id="customer-list">
+                <tr>
+                    <td>会社名:</td>
+                    <td id="companyName"></td>
+                </tr>
+                <tr>
+                    <td>業種:</td>
+                    <td id="industry"></td>
+                </tr>
+                <tr>
+                    <td>連絡先:</td>
+                    <td id="contact"></td>
+                </tr>
+                <tr>
+                    <td>所在地:</td>
+                    <td id="location"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" id="submit" class="btn btn-primary">送信</button>
     </div>
     <script type="module">
-        <!-- ここにJSを書く -->
+        import config from '../config.js';
+
+        const value = sessionStorage.getItem('formData');
+        const formData = JSON.parse(value);
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerId = urlParams.get('id');
+
+        document.getElementById('companyName').textContent = formData['companyName'];
+        document.getElementById('industry').textContent = formData['industry'];
+        document.getElementById('contact').textContent = formData['contact'];
+        document.getElementById('location').textContent = formData['location'];
+
+        //変更送信
+        document.getElementById('submit').addEventListener('click', function (e) {
+            e.preventDefault();
+            const formData = {
+                companyName: document.getElementById('companyName').textContent,
+                industry: document.getElementById('industry').textContent,
+                contact: document.getElementById('contact').textContent,
+                location: document.getElementById('location').textContent
+            }
+            fetch(`${config.apiUrl}/update-customer/${customerId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('顧客情報が正常に保存されました。');
+                        window.location.href = `detail.html?id=${customerId}`;
+                    } else {
+                        alert('保存に失敗しました。');
+                        console.log(data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>

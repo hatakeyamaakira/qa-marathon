@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顧客情報入力</title>
+    <title>Customer Add</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
@@ -30,7 +30,6 @@
                 <input type="text" class="form-control" id="location" name="location" required>
             </div>
             <button type="submit" class="btn btn-primary">顧客登録確認画面</button>
-            <!-- <input type="submit" value="送信" class="btn btn-primary"> -->
         </form>
     </div>
     <script type="module">
@@ -46,7 +45,7 @@
             });
 
             sessionStorage.setItem('formData', JSON.stringify(formData));
-            window.location.href = 'http://localhost/customer/add-confirm.html';
+            window.location.href = 'add-confirm.html';
         });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->

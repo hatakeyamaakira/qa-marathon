@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Customer List</h1>
+        <a href="list.html">戻る</a>
+        <table class="table table-striped">
+            <tbody id="customer-list">
+                <tr>
+                    <td>会社名:</td>
+                    <td id="companyName"></td>
+                </tr>
+                <tr>
+                    <td>業種:</td>
+                    <td id="industry"></td>
+                </tr>
+                <tr>
+                    <td>連絡先:</td>
+                    <td id="contact"></td>
+                </tr>
+                <tr>
+                    <td>所在地:</td>
+                    <td id="location"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" id="update" class="btn btn-primary">編集</button>
+        <div class="row">
+            <div class="col text-right">
+                <button type="submit" id="delete" class="btn btn-danger">削除</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script type="module">
+        import config from '../config.js';
+
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const customerId = urlParams.get('id');
+        // 詳細情報表示
+        fetch(`${config.apiUrl}/customer/${customerId}`)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data); // ここで解析されたデータをログに出力
+                document.getElementById('companyName').textContent = data.company_name;
+                document.getElementById('industry').textContent = data.industry;
+                document.getElementById('contact').textContent = data.contact;
+                document.getElementById('location').textContent = data.location;
+            })
+            .catch((error) => console.error(error));
+
+        // 削除ボタン
+        document.getElementById('delete').addEventListener('click', function (e) {
+            e.preventDefault();
+            confirm('削除していいですか？');
+            fetch(`${config.apiUrl}/delete-customer/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = 'list.html'
+                    } else {
+                        console.log("削除できませんでした。");
+                    }
+                })
+                .catch((error) => console.error(error));
+
+        });
+
+        // 編集ボタン
+        document.getElementById('update').addEventListener('click', function(){
+            window.location.href = `update.html?id=${customerId}`;
+        });
+
+    </script>
+</body>
+
+</html>

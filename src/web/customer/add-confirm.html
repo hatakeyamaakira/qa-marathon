@@ -4,33 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案件情報入力</title>
+    <title>Customer Add Confirm</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">顧客情報確認画面</h2>
+        <h2 class="mb-4">顧客情報 確認画面</h2>
         <form id="customer-form">
-            <div class="form-group">
-                <label for="companyName">会社名:</label>
-                <input type="text" class="form-control" id="companyName" name="companyName" readonly>
-            </div>
-            <div class="form-group">
-                <label for="industry">業種:</label>
-                <input type="text" class="form-control" id="industry" name="industry" readonly>
-            </div>
-            <div class="form-group">
-                <label for="contact">連絡先:</label>
-                <input type="text" class="form-control" id="contact" name="contact" readonly>
-            </div>
-            <div class="form-group">
-                <label for="location">所在地:</label>
-                <input type="text" class="form-control" id="location" name="location" readonly>
-            </div>
-            <button type="submit" class="btn btn-primary">送信</button>
-        </form>
+            <a href="#" onclick="window.history.back(); return false;">戻る</a>
+            <table class="table table-striped">
+                <tbody id="customer-list">
+                    <tr>
+                        <td>会社名:</td>
+                        <td id="companyName"></td>
+                    </tr>
+                    <tr>
+                        <td>業種:</td>
+                        <td id="industry"></td>
+                    </tr>
+                    <tr>
+                        <td>連絡先:</td>
+                        <td id="contact"></td>
+                    </tr>
+                    <tr>
+                        <td>所在地:</td>
+                        <td id="location"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" id="submit" class="btn btn-primary">送信</button>
     </div>
     <script type="module">
         import config from '../config.js';
@@ -38,33 +42,32 @@
         const value = sessionStorage.getItem('formData');
         const formData = JSON.parse(value);
 
-        const companyName = formData['companyName'];
-        const industry = formData['industry'];
-        console.log(industry);
-        const contact = formData['contact'];
-        const location = formData['location'];
-
-        document.getElementById('companyName').value = companyName;
-        document.getElementById('industry').value = industry;
-        document.getElementById('contact').value = contact;
-        document.getElementById('location').value = location;
+        document.getElementById('companyName').textContent = formData['companyName'];
+        document.getElementById('industry').textContent = formData['industry'];
+        document.getElementById('contact').textContent = formData['contact'];
+        document.getElementById('location').textContent = formData['location'];
 
         document.getElementById('customer-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            const formData = new FormData(this);
+            const formData = {
+                companyName: document.getElementById('companyName').textContent,
+                industry: document.getElementById('industry').textContent,
+                contact: document.getElementById('contact').textContent,
+                location: document.getElementById('location').textContent
+            }
             fetch(config.apiUrl + '/add-customer', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 },
-                body: new URLSearchParams([...formData])
+                body: JSON.stringify(formData)
             }).then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert('顧客情報が正常に保存されました。');
                         // フォームをリセット
                         document.getElementById('customer-form').reset();
-                        window.location.href = 'http://localhost/customer/list.html';
+                        window.location.href = 'list.html';
                     } else {
                         alert('保存に失敗しました。');
                         console.log(data);
