@@ -23,6 +23,7 @@
         </tbody>
       </table>
     </div>
+    <button type="button" id="button" class="btn btn-primary">顧客登録画面</button>
 
     <script type="module">
       // ExpressサーバのAPIエンドポイントのURL
@@ -38,7 +39,8 @@
           const list = document.getElementById("customer-list");
           data.forEach((customer, index) => {
             const link = document.createElement('a');
-            link.href = '#';
+            link.setAttribute('id', customer.customer_id)
+            link.href = 'http://localhost/customer/detail.html';
             link.textContent = customer.company_name;
             const row = list.insertRow();
             const cell1 = row.insertCell(0);
@@ -47,9 +49,14 @@
             cell1.textContent = index + 1;
             cell2.appendChild(link);
             cell3.textContent = customer.contact;
+            console.log(cell2);
           });
         })
         .catch((error) => console.error(error));
+
+        document.getElementById('button').addEventListener('click', function() {
+          window.location.href = 'http://localhost/customer/add.html';
+        });
     </script>
 
     <!-- BootstrapのJavaScriptと依存関係のリンク -->
