@@ -41,7 +41,7 @@
         const list = document.getElementById("customer-list");
         data.forEach((customer, index) => {
           const link = document.createElement('a');
-          link.href = `http://localhost/customer/detail.html?id=${customer.customer_id}`;
+          link.href = `detail.html?id=${customer.customer_id}`;
           link.textContent = customer.company_name;
           const row = list.insertRow();
           const cell1 = row.insertCell(0);
@@ -56,7 +56,7 @@
 
     // 顧客登録ボタン
     document.getElementById('button').addEventListener('click', function () {
-      window.location.href = 'http://localhost/customer/add.html';
+      window.location.href = 'add.html';
     });
   </script>
 
