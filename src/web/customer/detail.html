@@ -54,7 +54,7 @@
                 return response.json();
             })
             .then((data) => {
-                console.log(data); // ここで解析されたデータをログに出力
+                console.log(data);
                 document.getElementById('companyName').textContent = data.company_name;
                 document.getElementById('industry').textContent = data.industry;
                 document.getElementById('contact').textContent = data.contact;
