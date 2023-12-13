@@ -15,8 +15,11 @@ services:
     image: node:20-bullseye
     ports:
       - "3000:3505"
+    env_file:
+      - .env
     volumes:
       - "./src/node:/app"
+      - "./.env:/app/.env"
       - "./work:/work"
     working_dir: /app
     tty: true
