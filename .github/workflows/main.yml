@@ -16,6 +16,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY_ST }}
       - run: ssh ${{ steps.ssh.outputs.SERVER }} bash /app/deploy.sh akira_hatakeyama
 
+//本番環境
   deploy-to-production:
     runs-on: ubuntu-latest
     needs: test
