@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
-require('dotenv').config();
+if (require.resolve('dotenv')) {
+  require('dotenv').config();
+} else {
+  require('/app/akira_hatakeyama/src/node/node_modules/dotenv').config({ path: '/app/akira_hatakeyama/.env' });
+}
+console.log(process.env.POSTGRES_DB);
 
 const port = 3505;
 
