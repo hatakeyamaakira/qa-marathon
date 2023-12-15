@@ -19,7 +19,7 @@ jobs:
   deploy-to-production:
     runs-on: ubuntu-latest
       needs: test
-      # if: ${{ test.result == 'success' }}
+      if: ${{ test.result == 'success' }}
       steps:
       - id: ssh
         uses: invi5H/ssh-action@v1
